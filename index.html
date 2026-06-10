@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>我的美食地圖</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+#map{
+height:100vh;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView(
+[25.0418,121.5654],
+13
+);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+attribution:'© OpenStreetMap'
+}
+).addTo(map);
+
+fetch('restaurants.json')
+.then(r=>r.json())
+.then(data=>{
+
+data.forEach(shop=>{
+
+L.marker([
+shop.lat,
+shop.lng
+])
+.addTo(map)
+.bindPopup(`
+<b>${shop.name}</b><br>
+${shop.type}
+`);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
